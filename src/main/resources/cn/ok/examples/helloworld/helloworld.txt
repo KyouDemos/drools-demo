@@ -1,5 +1,4 @@
-package cn.ok.examples.helloworld
-
+// 该文档内容用于演示Drools通过字符流加载规则。
 import cn.ok.domains.Message;
 
 global java.util.List list
