@@ -66,6 +66,8 @@ public class KieSessionFactoryTest {
         log.info("list1: {}", list.toString());
         Assert.assertEquals("[Hello World, Good Bye]", list.toString());
 
+        // 规则运行时，对 Message.message 进行了修改。
+        log.info("Message.message has changed to \"{}\"", message.getMessage());
 
         // 第二个数据对象
         // 初始化全局变量
