@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,8 +34,9 @@ public class KieSessionFactoryTest {
     @After
     public void tearDown() {
 
+        // and then dispose the session
         if (kieSession != null) {
-            // and then dispose the session
+            log.debug("dispose the kieSession.");
             kieSession.dispose();
         }
 
@@ -45,6 +47,7 @@ public class KieSessionFactoryTest {
     public void getKieSession() {
         kieSession = KieSessionFactory.getKieSession(KieSessionName);
 
+        // 第一个数据对象
         // Once the session is created, the application can interact with it
         // In this case it is setting a global as defined in the
         // org/drools/examples/helloworld/HelloWorld.drl file
@@ -55,15 +58,28 @@ public class KieSessionFactoryTest {
         message.setStatus(Message.HELLO);
 
         // The application can insert facts into the session
-        kieSession.insert(message);
-
+        FactHandle fh = kieSession.insert(message);
         // and fire the rules
         kieSession.fireAllRules();
 
         List list = (ArrayList) kieSession.getGlobal("list");
-        log.info(list.toString());
-
+        log.info("list1: {}", list.toString());
         Assert.assertEquals("[Hello World, Good Bye]", list.toString());
+
+
+        // 第二个数据对象
+        // 初始化全局变量
+        kieSession.setGlobal("list", new ArrayList<>());
+        message.setStatus(Message.GOODBYE);
+
+        // 再次向规则中插入 message 对象，需要执行 update() 函数，第一个参数是要替换的上一次动作的返回值。
+        kieSession.update(fh, message);
+        // and fire the rules
+        kieSession.fireAllRules();
+
+        list = (ArrayList) kieSession.getGlobal("list");
+        log.info("list2: {}", list.toString());
+        Assert.assertEquals("[Good Bye]", list.toString());
     }
 
     @Test

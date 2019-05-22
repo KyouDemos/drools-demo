@@ -11,6 +11,8 @@ rule "Hello World"
     then
         list.add("Hello World");
         System.out.println( "0: " + message );
+
+        // 修改 message 对象，此修改在规则外部依然生效。
         modify( m ) { message = "Goodbye cruel world", status = Message.GOODBYE };
 end
 
