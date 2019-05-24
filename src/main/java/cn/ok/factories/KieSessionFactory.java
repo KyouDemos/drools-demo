@@ -8,6 +8,7 @@ import org.kie.api.builder.KieFileSystem;
 import org.kie.api.builder.Message;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
 
 /**
  * @author kyou on 2019-05-17 09:31
@@ -27,12 +28,12 @@ public class KieSessionFactory {
      */
     public static KieSession getKieSession(String ksName) {
         // From the kie services, a container is created from the classpath
-        KieServices ks = KieServices.Factory.get();
-        KieContainer kc = ks.getKieClasspathContainer();
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
 
         // From the container, a session is created based on
         // its definition and configuration in the META-INF/kmodule.xml file
-        return kc.newKieSession(ksName);
+        return kieContainer.newKieSession(ksName);
     }
 
     /**
@@ -60,5 +61,20 @@ public class KieSessionFactory {
         KieBase kieBase = kieContainer.getKieBase();
 
         return kieBase.newKieSession();
+    }
+
+
+    /**
+     * 根据 kmodule.xml 文件的配置，构建KieContainer，根据指定的 KieSession Name 实例化 Statefull KieSession。
+     * 并且从 ClassPath 目录加载 Drl 文件。
+     *
+     * @param ksName KieSession Name
+     * @return KieSession
+     */
+    public static StatelessKieSession getStatelessKieSession(String ksName) {
+        KieServices kieServices = KieServices.Factory.get();
+        KieContainer kieContainer = kieServices.getKieClasspathContainer();
+
+        return kieContainer.newStatelessKieSession(ksName);
     }
 }

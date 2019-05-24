@@ -3,4 +3,7 @@
     <kbase packages="cn.ok.examples.helloworld">
         <ksession name="HelloWorldKS"/>
     </kbase>
+    <kbase packages="cn.ok.examples.stateless">
+        <ksession name="StatelessKS" type="stateless"/>
+    </kbase>
 </kmodule>

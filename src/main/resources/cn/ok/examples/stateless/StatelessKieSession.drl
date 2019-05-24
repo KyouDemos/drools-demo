@@ -1,0 +1,11 @@
+package cn.ok.examples.stateless
+
+import cn.ok.domains.Applicant;
+
+rule "Is of valid age"
+when
+    a : Applicant( $age : age < 18 )
+then
+    System.out.println( "age: " + $age + " < 18 " );
+    modify( a ) { setValid( false ) };
+end

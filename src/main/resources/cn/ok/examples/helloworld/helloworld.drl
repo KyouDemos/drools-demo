@@ -9,18 +9,18 @@ rule "Hello World"
     when
         m : Message( status == Message.HELLO, message : message )
     then
-        list.add("Hello World");
+        list.add(message);
         System.out.println( "0: " + message );
 
         // 修改 message 对象，此修改在规则外部依然生效。
-        modify( m ) { message = "Goodbye cruel world", status = Message.GOODBYE };
+        modify( m ) { message = "Goodbye World (M)", status = Message.GOODBYE };
 end
 
-rule "Good Bye"
+rule "Goodbye World"
     dialect "java"
     when
         Message( status == Message.GOODBYE, message : message )
     then
-        list.add("Good Bye");
+        list.add(message);
         System.out.println( "1: " + message );
 end

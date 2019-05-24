@@ -1,13 +1,17 @@
 package cn.ok.factories;
 
+import cn.ok.domains.Applicant;
 import cn.ok.domains.Message;
 import lombok.extern.slf4j.Slf4j;
+import org.drools.core.command.runtime.rule.InsertObjectCommand;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.StatelessKieSession;
 import org.kie.api.runtime.rule.FactHandle;
+import org.kie.internal.command.CommandFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,7 +40,7 @@ public class KieSessionFactoryTest {
 
         // and then dispose the session
         if (kieSession != null) {
-            log.debug("dispose the kieSession.");
+            log.debug("Dispose the kieSession.");
             kieSession.dispose();
         }
 
@@ -50,7 +54,7 @@ public class KieSessionFactoryTest {
         // 第一个数据对象
         // Once the session is created, the application can interact with it
         // In this case it is setting a global as defined in the
-        // org/drools/examples/helloworld/HelloWorld.drl file
+        // org/drools/examples/helloworld/HelloWorldTest.drl file
         kieSession.setGlobal("list", new ArrayList<>());
 
         Message message = new Message();
@@ -107,5 +111,24 @@ public class KieSessionFactoryTest {
         log.info(list.toString());
 
         Assert.assertEquals("[Hello World, Good Bye]", list.toString());
+    }
+
+
+    @Test
+    public void getStatelessKieSession() {
+        StatelessKieSession statelessKieSession = KieSessionFactory.getStatelessKieSession("StatelessKS");
+
+        Applicant applicant = new Applicant("Mr John Smith", 16, true);
+        log.debug(applicant.toString());
+
+        InsertObjectCommand ioCommand = new InsertObjectCommand(applicant);
+        statelessKieSession.execute(ioCommand);
+        log.debug(applicant.toString());
+
+        applicant.setAge(20);
+        statelessKieSession.execute(CommandFactory.newInsert(applicant));
+
+        log.debug(applicant.toString());
+        Assert.assertFalse(applicant.isValid());
     }
 }
