@@ -68,7 +68,7 @@ public class KieSessionFactoryTest {
 
         List list = (ArrayList) kieSession.getGlobal("list");
         log.info("list1: {}", list.toString());
-        Assert.assertEquals("[Hello World, Good Bye]", list.toString());
+        Assert.assertEquals("[Hello World, Goodbye World (M)]", list.toString());
 
         // 规则运行时，对 Message.message 进行了修改。
         log.info("Message.message has changed to \"{}\"", message.getMessage());
@@ -85,7 +85,7 @@ public class KieSessionFactoryTest {
 
         list = (ArrayList) kieSession.getGlobal("list");
         log.info("list2: {}", list.toString());
-        Assert.assertEquals("[Good Bye]", list.toString());
+        Assert.assertEquals("[Goodbye World (M)]", list.toString());
     }
 
     @Test

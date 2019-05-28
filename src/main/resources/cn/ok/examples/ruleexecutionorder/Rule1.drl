@@ -1,0 +1,10 @@
+package cn.ok.examples.ruleexecutionorder
+
+import cn.ok.domains.Message;
+
+rule "Rule1"
+    when
+        m : Message( message == "Goodbye World", message : message.substring(0, 10) );
+    then
+        System.out.println( "Rule1: " + message );
+end
