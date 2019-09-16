@@ -3,8 +3,11 @@
     <kbase packages="cn.ok.examples.helloworld">
         <ksession name="HelloWorldKS"/>
     </kbase>
-    <kbase packages="cn.ok.examples.ruleexecutionorder">
+    <kbase packages="cn.ok.examples.ruleexecutionorder" default="true">
         <ksession name="RuleExecutionOrderKS"/>
+    </kbase>
+    <kbase packages="cn.ok.examples.paramtest">
+        <ksession name="ParamTestKS"/>
     </kbase>
     <kbase packages="cn.ok.examples.stateless">
         <ksession name="StatelessKS" type="stateless"/>

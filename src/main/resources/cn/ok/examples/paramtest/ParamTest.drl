@@ -1,0 +1,14 @@
+package cn.ok.examples.paramtest
+import cn.ok.domains.BlackList;
+import cn.ok.domains.Message;
+
+global java.util.List lstBlackList
+
+rule "Rule_1"
+    when
+        Message($sts:status,$aa:aa)
+        $b : BlackList(id == $sts,id1==$aa) from lstBlackList
+        $b : BlackList(id == $sts,id1==$aa) from lstBlackList
+    then
+        System.out.println( $b );
+end

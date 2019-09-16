@@ -1,0 +1,12 @@
+package cn.ok.examples.ruleexecutionorder
+import cn.ok.domains.Message;
+
+global java.util.List paramList
+
+rule "Rule_1"
+    when
+        // m : Message( status != 1, message == 'message_1' );
+        $m : Message(status == 1) from paramList
+    then
+        System.out.println( $m );
+end

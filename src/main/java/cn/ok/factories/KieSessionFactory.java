@@ -16,6 +16,10 @@ import org.kie.api.runtime.StatelessKieSession;
 @Slf4j
 public class KieSessionFactory {
 
+    // From the kie services, a container is created from the classpath
+    private static KieServices kieServices = KieServices.Factory.get();
+    private static KieContainer kieContainer = kieServices.getKieClasspathContainer();
+
     /**
      * 根据 kmodule.xml 文件的配置，构建KieContainer，根据指定的 KieSession Name 实例化 Statefull KieSession。
      * 并且从 ClassPath 目录加载 Drl 文件。
@@ -27,13 +31,15 @@ public class KieSessionFactory {
      * @return KieSession
      */
     public static KieSession getKieSession(String ksName) {
-        // From the kie services, a container is created from the classpath
-        KieServices kieServices = KieServices.Factory.get();
-        KieContainer kieContainer = kieServices.getKieClasspathContainer();
-
         // From the container, a session is created based on
         // its definition and configuration in the META-INF/kmodule.xml file
         return kieContainer.newKieSession(ksName);
+    }
+
+    public static KieSession getKieSession() {
+        // From the container, a session is created based on
+        // its definition and configuration in the META-INF/kmodule.xml file
+        return kieContainer.newKieSession();
     }
 
     /**
@@ -44,8 +50,6 @@ public class KieSessionFactory {
      * @return KieSession
      */
     public static KieSession getKieSessionFromStream(String ruleString) {
-
-        KieServices kieServices = KieServices.Factory.get();
         KieFileSystem kieFileSystem = kieServices.newKieFileSystem();
 
         // 此处指定路径是虚拟文件，如果字符流中存在包定义，包定义与虚拟文件路径不一致将引发告警。
@@ -72,9 +76,10 @@ public class KieSessionFactory {
      * @return KieSession
      */
     public static StatelessKieSession getStatelessKieSession(String ksName) {
-        KieServices kieServices = KieServices.Factory.get();
-        KieContainer kieContainer = kieServices.getKieClasspathContainer();
-
         return kieContainer.newStatelessKieSession(ksName);
+    }
+
+    public static StatelessKieSession getStatelessKieSession() {
+        return kieContainer.newStatelessKieSession();
     }
 }
